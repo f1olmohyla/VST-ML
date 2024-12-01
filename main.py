@@ -152,7 +152,7 @@ for idx, param_map in enumerate(result):
     )
 
     # Save the audio to a file
-    output_file = os.path.join(audio_output_folder, f"{param_map["file_name"]}")
+    output_file = os.path.join(audio_output_folder, f'{param_map["file_name"]}')
     with AudioFile(output_file, "w", samplerate=sample_rate, num_channels=audio.shape[0]) as f:
         f.write(audio)
 
