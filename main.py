@@ -1,7 +1,9 @@
+import os
 from pedalboard import Pedalboard, Reverb, load_plugin
 from pedalboard.io import AudioFile
 from mido import Message # not part of Pedalboard, but convenient!
 from utils import create_new_folder
+import pandas as pd
 
 
 # Load a VST3 or Audio Unit plugin from a known path on disk:
@@ -94,6 +96,7 @@ pulse_width_values = generate_values(next(p for p in dynamic_parameters if p['pa
 
 # Combine all parameters into a list of maps
 result = []
+file_counter = 0
 for bitcrusher in bitcrusher_values:
     for vibrato_intensity in vibrato_intensity_values:
         for vibrato_frequency in vibrato_frequency_values:
@@ -101,19 +104,29 @@ for bitcrusher in bitcrusher_values:
                 for oscillator_shape in oscillator_combinations:
                     for lfo_shape in lfo_combinations:
                         param_map = {
+                            'file_name': str(file_counter) + ".wav",
                             'bitcrusher': bitcrusher,
                             'vibrato_intensity': vibrato_intensity,
                             'vibrato_frequency': vibrato_frequency,
                             'pulse_width': pulse_width,
                             **oscillator_shape,
                             **lfo_shape,
+                            **constant_params_map,
                         }
+                        file_counter += 1
                         result.append(param_map)
 
 # Output the result
 print(f"Generated {len(result)} parameter maps.")
-for r in result[10:20]:  # Display the first 10 for brevity
-    print(r)
+
+# Create a DataFrame to organize data
+df = pd.DataFrame(result)
+
+# Save the DataFrame to a CSV file
+output_file_path = "vst_plugin_parameters.csv"
+df.to_csv(output_file_path, index=False)
+
+print(f"CSV file saved at {output_file_path}")
 
 # Render some audio by passing MIDI to an instrument:
 sample_rate = 44100
@@ -123,14 +136,24 @@ midi_message = [
 ]
 
 # Set constant parameters to instrument
-for key, value in constant_params_map.items():
-    setattr(instrument, key, value)
+# Iterate through general_parameters and generate audio files
+for idx, param_map in enumerate(result):
+    # Set all parameters to the instrument
+    for key, value in param_map.items():
+        setattr(instrument, key, value)
 
-audio = instrument(
-  midi_message,
-  duration=3, # seconds audio file duration
-  sample_rate=sample_rate,
-)
+    file_name = param_map["file_name"]
 
-with AudioFile(audio_output_folder + "/output.wav", "w", samplerate=sample_rate, num_channels=audio.shape[0]) as f:
-  f.write(audio)
+    # Render audio using the current parameter settings
+    audio = instrument(
+        midi_message,
+        duration=3,  # seconds
+        sample_rate=sample_rate,
+    )
+
+    # Save the audio to a file
+    output_file = os.path.join(audio_output_folder, f"{param_map["file_name"]}")
+    with AudioFile(output_file, "w", samplerate=sample_rate, num_channels=audio.shape[0]) as f:
+        f.write(audio)
+
+    print(f"Generated file: {output_file}")
