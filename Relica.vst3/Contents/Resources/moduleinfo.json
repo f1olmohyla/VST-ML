@@ -1,0 +1,60 @@
+{
+  "Name": "Relica",
+  "Version": "1.0.5",
+  "Factory Info": {
+    "Vendor": "Hivetune",
+    "URL": "www.hivetune.com",
+    "E-Mail": "hivetune.contact@gmail.com",
+    "Flags": {
+      "Unicode": true,
+      "Classes Discardable": false,
+      "Component Non Discardable": false,
+    },
+  },
+  "Classes": [
+    {
+      "CID": "ABCDEF019182FAEB4869766552656C69",
+      "Category": "Audio Module Class",
+      "Name": "Relica",
+      "Vendor": "Hivetune",
+      "Version": "1.0.5",
+      "SDKVersion": "VST 3.7.11",
+      "Sub Categories": [
+        "Instrument",
+        "Synth",
+      ],
+      "Class Flags": 2,
+      "Cardinality": 2147483647,
+      "Snapshots": [
+      ],
+    },
+    {
+      "CID": "ABCDEF011234ABCD4869766552656C69",
+      "Category": "Component Controller Class",
+      "Name": "Relica",
+      "Vendor": "Hivetune",
+      "Version": "1.0.5",
+      "SDKVersion": "VST 3.7.11",
+      "Sub Categories": [
+        "Instrument",
+        "Synth",
+      ],
+      "Class Flags": 2,
+      "Cardinality": 2147483647,
+      "Snapshots": [
+      ],
+    },
+    {
+      "CID": "ABCDEF01C0DEF00D4869766552656C69",
+      "Category": "Plugin Compatibility Class",
+      "Name": "Relica",
+      "Vendor": "Hivetune",
+      "Version": "1.0.5",
+      "SDKVersion": "VST 3.7.11",
+      "Class Flags": 0,
+      "Cardinality": 2147483647,
+      "Snapshots": [
+      ],
+    },
+  ],
+}
