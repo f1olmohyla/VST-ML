@@ -2,7 +2,6 @@ from pedalboard import Pedalboard, Reverb, load_plugin
 from pedalboard.io import AudioFile
 from mido import Message # not part of Pedalboard, but convenient!
 from utils import create_new_folder
-from itertools import product
 
 
 # Load a VST3 or Audio Unit plugin from a known path on disk:
@@ -80,13 +79,13 @@ lfo_shapes = [
 ]
 lfo_combinations = generate_shape_combinations(lfo_shapes)
 
-discrete_step = 10
-
 # Generate step-based ranges for continuous parameters
 def generate_values(param):
     if isinstance(param['min'], bool):  # Skip boolean parameters
         return []
-    return [round(x, 1) for x in range(int(param['min']), int(param['max']) + 1, discrete_step)]
+    range_size = param['max'] - param['min']
+    step = range_size / 4  # Step is 1/5th of the range
+    return [round(param['min'] + i * step, 1) for i in range(5)]  # Include both ends
 
 bitcrusher_values = generate_values(next(p for p in dynamic_parameters if p['param_name'] == 'bitcrusher'))
 vibrato_intensity_values = generate_values(next(p for p in dynamic_parameters if p['param_name'] == 'vibrato_intensity'))
@@ -113,7 +112,7 @@ for bitcrusher in bitcrusher_values:
 
 # Output the result
 print(f"Generated {len(result)} parameter maps.")
-for r in result[:10]:  # Display the first 10 for brevity
+for r in result[10:20]:  # Display the first 10 for brevity
     print(r)
 
 # Render some audio by passing MIDI to an instrument:
@@ -129,7 +128,7 @@ for key, value in constant_params_map.items():
 
 audio = instrument(
   midi_message,
-  duration=4, # seconds
+  duration=3, # seconds audio file duration
   sample_rate=sample_rate,
 )
 
