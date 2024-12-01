@@ -1,2 +1,3 @@
 pedalboard
 mido
+numpy
