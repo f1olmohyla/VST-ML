@@ -16,8 +16,8 @@ from mido import Message # not part of Pedalboard, but convenient!
 #     print(item)
 
 # Load a VST3 or Audio Unit plugin from a known path on disk:
-# instrument = load_plugin("./Relica.vst3")
-effect = load_plugin("./RoughRider3.vst3")
+instrument = load_plugin("VSTs/Relica.vst3")
+effect = load_plugin("VSTs/Relica.vst3")
 
 print(effect.parameters.keys())
 # dict_keys([
