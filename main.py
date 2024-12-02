@@ -1,10 +1,9 @@
 import os
 from pedalboard import Pedalboard, Reverb, load_plugin
 from pedalboard.io import AudioFile
-from mido import Message # not part of Pedalboard, but convenient!
+from mido import Message  # not part of Pedalboard, but convenient!
 from utils import create_new_folder
 import pandas as pd
-
 
 # Load a VST3 or Audio Unit plugin from a known path on disk:
 instrument = load_plugin("VSTs/Relica.vst3")
@@ -54,6 +53,7 @@ for param in dynamic_parameters:
 audio_output_folder = "audio_files"
 create_new_folder(audio_output_folder)
 
+
 # Define helper function to create sequential oscillator or LFO shapes
 def generate_shape_combinations(param_names):
     combinations = []
@@ -62,6 +62,7 @@ def generate_shape_combinations(param_names):
         combination[name] = True
         combinations.append(combination)
     return combinations
+
 
 # Generate oscillator shape combinations
 oscillator_shapes = [
@@ -81,6 +82,7 @@ lfo_shapes = [
 ]
 lfo_combinations = generate_shape_combinations(lfo_shapes)
 
+
 # Generate step-based ranges for continuous parameters
 def generate_values(param):
     if isinstance(param['min'], bool):  # Skip boolean parameters
@@ -89,9 +91,12 @@ def generate_values(param):
     step = range_size / 4  # Step is 1/5th of the range
     return [round(param['min'] + i * step, 1) for i in range(5)]  # Include both ends
 
+
 bitcrusher_values = generate_values(next(p for p in dynamic_parameters if p['param_name'] == 'bitcrusher'))
-vibrato_intensity_values = generate_values(next(p for p in dynamic_parameters if p['param_name'] == 'vibrato_intensity'))
-vibrato_frequency_values = generate_values(next(p for p in dynamic_parameters if p['param_name'] == 'vibrato_frequency'))
+vibrato_intensity_values = generate_values(
+    next(p for p in dynamic_parameters if p['param_name'] == 'vibrato_intensity'))
+vibrato_frequency_values = generate_values(
+    next(p for p in dynamic_parameters if p['param_name'] == 'vibrato_frequency'))
 pulse_width_values = generate_values(next(p for p in dynamic_parameters if p['param_name'] == 'pulse_width'))
 
 # Combine all parameters into a list of maps
@@ -132,7 +137,7 @@ print(f"CSV file saved at {output_file_path}")
 sample_rate = 44100
 midi_message = [
     Message("note_on", note=60),
-    Message("note_off", note=60, time=2), # 2 Seconds note hold duration
+    Message("note_off", note=60, time=2),  # 2 Seconds note hold duration
 ]
 
 # Set constant parameters to instrument

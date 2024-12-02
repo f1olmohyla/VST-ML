@@ -1,6 +1,7 @@
 import os
 import shutil
 
+
 def create_new_folder(folder_path):
     # Check if the folder already exists
     if os.path.exists(folder_path):
