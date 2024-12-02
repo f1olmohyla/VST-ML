@@ -126,7 +126,7 @@ def train_model(X, y):
 
     return model, history
 
-# Main workflow
+
 if __name__ == "__main__":
     # generate_spectrograms()
 

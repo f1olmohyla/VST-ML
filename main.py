@@ -1,11 +1,10 @@
 import os
 from pedalboard import Pedalboard, Reverb, load_plugin
 from pedalboard.io import AudioFile
-from mido import Message  # not part of Pedalboard, but convenient!
+from mido import Message
 from utils import create_new_folder
 import pandas as pd
 
-# Load a VST3 or Audio Unit plugin from a known path on disk:
 instrument = load_plugin("VSTs/Relica.vst3")
 
 # Print param ranges

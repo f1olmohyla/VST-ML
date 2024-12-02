@@ -25,7 +25,7 @@ else:
 model = load_model(MODEL_KERAS)
 print("Model loaded successfully.")
 
-# Step 1: Generate a test WAV file
+# Generate a test WAV file
 def generate_test_wav(output_path, params, midi_message):
     # Load VST3 plugin
     instrument = load_plugin("VSTs/Relica.vst3")
@@ -85,7 +85,7 @@ midi_message = [
 # Generate test WAV file
 generate_test_wav(TEST_WAV_FILE, params, midi_message)
 
-# Step 2: Convert the WAV file to a spectrogram
+# Convert the WAV file to a spectrogram
 def generate_spectrogram(wav_file):
     y, sr = librosa.load(wav_file, sr=None)
 
@@ -120,7 +120,6 @@ for i, key in enumerate(dynamic_params.keys()):
         prediction = predicted_params[0][i]
     print(f"{key}: {prediction}")
 
-# Optional: Calculate MAE
 actual_values = np.array([int(val) if isinstance(val, bool) else val for val in dynamic_params.values()])
 predicted_values = np.array([predicted_params[0][i] for i in range(len(dynamic_params))])
 mae = np.mean(np.abs(actual_values - predicted_values))
